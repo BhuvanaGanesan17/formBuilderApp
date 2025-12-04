@@ -7,63 +7,46 @@ on:
     branches: [ main ]
 
 jobs:
-  # -------------------------------
-  # ANDROID BUILD (Free)
-  # -------------------------------
   android:
     name: Build Android APK
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout Repo
+      - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Setup Flutter
+      - name: Set up Flutter
         uses: subosito/flutter-action@v2
         with:
-          channel: stable
+          flutter-version: '3.22.0'
 
-      - name: Install Dependencies
+      - name: Install dependencies
         run: flutter pub get
 
-      - name: Run Tests
-        run: flutter test
-
-      - name: Build Android APK
+      - name: Build APK
         run: flutter build apk --release
 
       - name: Upload APK
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
-          name: android-apk
+          name: release-apk
           path: build/app/outputs/flutter-apk/app-release.apk
 
-  # -------------------------------
-  # iOS BUILD (Requires macOS runner)
-  # -------------------------------
   ios:
     name: Build iOS App
     runs-on: macos-latest
-    needs: android   # iOS builds after Android success
 
     steps:
-      - name: Checkout Repo
+      - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Setup Flutter
+      - name: Set up Flutter
         uses: subosito/flutter-action@v2
         with:
-          channel: stable
+          flutter-version: '3.22.0'
 
-      - name: Install Dependencies
+      - name: Install dependencies
         run: flutter pub get
 
-      - name: Build iOS (no signing)
-        run: flutter build ios --no-codesign
-
-      - name: Upload iOS Build Folder
-        uses: actions/upload-artifact@v3
-        with:
-          name: ios-build
-          path: build/ios/iphoneos
-
+      - name: Build iOS
+        run: flutter build ios --release
