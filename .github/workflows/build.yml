@@ -1,37 +1,61 @@
-name: Flutter CI/CD
+name: Flutter CI
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ main ]
   pull_request:
-    branches: [ "main" ]
+    branches: [ main ]
 
 jobs:
   build:
-    name: Build Flutter Android APK
+    name: Build Flutter App
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout Code
-        uses: actions/checkout@v3
+      - name: 🔄 Checkout Code
+        uses: actions/checkout@v4
 
-      - name: Setup Flutter
+      - name: 🧩 Setup Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: "3.22.0"   # You can change this
+          flutter-version: '3.38.4'
 
-      - name: Flutter Pub Get
+      - name: 📦 Install Dependencies
         run: flutter pub get
 
-      - name: Flutter Clean
-        run: flutter clean
+      - name: 🧪 Run Tests
+        run: flutter test
 
-      - name: Build Release APK
-        run: flutter build apk --release --android-skip-build-dependency-validation
+      - name: 🏗️ Build APK
+        run: flutter build apk --release
 
-      - name: Upload APK Artifact
-        uses: actions/upload-artifact@v3
+      - name: 📤 Upload Artifact (APK)
+        uses: actions/upload-artifact@v4
         with:
-          name: app-release-apk
+          name: release-apk
           path: build/app/outputs/flutter-apk/app-release.apk
 
+  build-appbundle:
+    name: Build App Bundle (AAB)
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 🔄 Checkout Code
+        uses: actions/checkout@v4
+
+      - name: 🧩 Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.38.4'
+
+      - name: 📦 Install Dependencies
+        run: flutter pub get
+
+      - name: 🏗️ Build App Bundle
+        run: flutter build appbundle --release
+
+      - name: 📤 Upload Artifact (AAB)
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-aab
+          path: build/app/outputs/bundle/release/app-release.aab
