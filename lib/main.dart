@@ -155,21 +155,40 @@ class JsonEditorState extends ConsumerState<JsonEditor> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text("🔧 JSON Editor", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
-                Row(
-                  children: [
-
-                    IconButton(
-                      icon: Icon(Icons.content_copy),
-                      tooltip: "Copy JSON",
-                      onPressed: () => Clipboard.setData(ClipboardData(text: _codeController.text)),
-                    ),
-                  ],
+                Expanded(
+                  child: Text(
+                    "🔧 JSON Editor",
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                    overflow: TextOverflow.ellipsis, // prevents overflow
+                  ),
+                ),
+                IconButton(
+                  icon: Icon(Icons.content_copy),
+                  tooltip: "Copy JSON",
+                  onPressed: () => Clipboard.setData(
+                    ClipboardData(text: _codeController.text),
+                  ),
                 ),
               ],
             ),
+
+            // Row(
+            //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            //   children: [
+            //     Text("🔧 JSON Editor", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+            //     Row(
+            //       children: [
+            //
+            //         IconButton(
+            //           icon: Icon(Icons.content_copy),
+            //           tooltip: "Copy JSON",
+            //           onPressed: () => Clipboard.setData(ClipboardData(text: _codeController.text)),
+            //         ),
+            //       ],
+            //     ),
+            //   ],
+            // ),
             Divider(),
             Expanded(
               child: ListView(
